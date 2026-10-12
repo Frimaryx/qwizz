@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="4-сынып оқушыларына арналған математикалық викторина: 10, 100 және 1000-ға көбейту мен бөлу." />
+  <title>Математикалық викторина · 10, 100, 1000-ға көбейту және бөлу</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- ============ Қошқармүйіз таңбасы (әр жерде қайта қолданылады) ============ -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <symbol id="qoshqar-sym" viewBox="0 0 100 100">
+        <path
+          d="M50 93 C25 93 11 73 11 53 C11 32 27 15 48 15 C67 15 83 28 83 47 C83 63 71 75 57 75 C46 75 38 67 38 57 C38 48 45 41 54 41"
+          fill="none" stroke="currentColor" stroke-width="5.5"
+          stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="54" cy="41" r="3.6" fill="currentColor" />
+      </symbol>
+    </defs>
+  </svg>
+
+  <!-- ============ Фондық ою-өрнек ============ -->
+  <div class="bg" aria-hidden="true">
+    <svg class="bg-pattern" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="ornamentPattern" width="170" height="170" patternUnits="userSpaceOnUse">
+          <use href="#qoshqar-sym" x="8" y="8" width="78" height="78" />
+          <use href="#qoshqar-sym" x="92" y="92" width="78" height="78" />
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#ornamentPattern)" />
+    </svg>
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+  </div>
+
+  <div class="app">
+    <!-- ============ Тақырып ============ -->
+    <header class="site-header">
+      <div class="header-ornament" aria-hidden="true">
+        <span class="orn-line"></span>
+        <svg class="orn-icon" viewBox="0 0 100 100"><use href="#qoshqar-sym" /></svg>
+        <svg class="orn-icon orn-flip" viewBox="0 0 100 100"><use href="#qoshqar-sym" /></svg>
+        <span class="orn-line"></span>
+      </div>
+      <h1>Математикалық викторина</h1>
+      <p class="subtitle">10, 100 және 1000-ға көбейту мен бөлу · 4-сынып</p>
+    </header>
+
+    <main class="card-wrap">
+      <div class="card">
+        <!-- ою-өрнектелген бұрыштар -->
+        <svg class="corner corner-tl" viewBox="0 0 100 100" aria-hidden="true"><use href="#qoshqar-sym" /></svg>
+        <svg class="corner corner-tr" viewBox="0 0 100 100" aria-hidden="true"><use href="#qoshqar-sym" /></svg>
+        <svg class="corner corner-bl" viewBox="0 0 100 100" aria-hidden="true"><use href="#qoshqar-sym" /></svg>
+        <svg class="corner corner-br" viewBox="0 0 100 100" aria-hidden="true"><use href="#qoshqar-sym" /></svg>
+
+        <!-- ========== 1. Бастау экраны ========== -->
+        <section id="screen-start" class="screen active">
+          <div class="start-badge" aria-hidden="true">
+            <svg viewBox="0 0 100 100"><use href="#qoshqar-sym" /></svg>
+          </div>
+          <h2 class="screen-title">Қош келдің!</h2>
+          <p class="start-text">
+            Бұл викторинада сандарды <strong>10-ға</strong>, <strong>100-ге</strong> және
+            <strong>1000-ға</strong> көбейту мен бөлуді жаттықтырасың.
+          </p>
+          <ul class="start-list">
+            <li><span class="tick">10</span> сұрақ, әр сұрақта 4 жауап нұсқасы</li>
+            <li><span class="tick">1</span> дұрыс жауапқа 1 ұпай</li>
+            <li><span class="tick">?</span> қате жауап болса — түсіндірме көрсетіледі</li>
+            <li><span class="tick">♪</span> соңында қателерді қайталап, түзетуге болады</li>
+          </ul>
+          <button id="btn-start" class="btn btn-primary" type="button">Викторинаны бастау</button>
+        </section>
+
+        <!-- ========== 2. Викторина / Қайталау экраны ========== -->
+        <section id="screen-quiz" class="screen">
+          <div class="quiz-top">
+            <span id="quiz-mode-label" class="mode-label">Викторина</span>
+            <span id="quiz-counter" class="counter">1/10</span>
+          </div>
+
+          <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="10" aria-valuenow="0">
+            <div id="progress-fill" class="progress-fill"></div>
+          </div>
+
+          <h2 id="quiz-question" class="question-text">Сұрақ мәтіні</h2>
+
+          <div id="quiz-options" class="options"></div>
+
+          <div id="quiz-feedback" class="feedback" hidden>
+            <div class="feedback-head">
+              <span id="feedback-icon" class="feedback-icon">✓</span>
+              <span id="feedback-title" class="feedback-title"></span>
+            </div>
+            <p id="feedback-text" class="feedback-text"></p>
+          </div>
+
+          <div class="quiz-actions">
+            <button id="btn-next" class="btn btn-primary" type="button" disabled>Келесі сұрақ</button>
+          </div>
+        </section>
+
+        <!-- ========== 3. Нәтиже экраны ========== -->
+        <section id="screen-results" class="screen">
+          <div class="result-star" aria-hidden="true">
+            <svg viewBox="0 0 100 100"><use href="#qoshqar-sym" /></svg>
+          </div>
+          <h2 class="screen-title" id="results-title">Нәтиже</h2>
+
+          <div class="score-circle">
+            <span id="results-score" class="score-big">0</span>
+            <span class="score-max">/ 10 ұпай</span>
+          </div>
+
+          <div class="stats">
+            <div class="stat stat-good">
+              <span class="stat-num" id="stat-correct">0</span>
+              <span class="stat-label">Дұрыс жауап</span>
+            </div>
+            <div class="stat stat-bad">
+              <span class="stat-num" id="stat-wrong">0</span>
+              <span class="stat-label">Қате жауап</span>
+            </div>
+          </div>
+
+          <p id="results-message" class="results-message"></p>
+
+          <div class="results-actions">
+            <button id="btn-review" class="btn btn-gold" type="button">Қателерді қайталау</button>
+            <button id="btn-restart" class="btn btn-primary" type="button">Қайта бастау</button>
+          </div>
+        </section>
+
+        <!-- ========== 4. Қайталау қорытындысы ========== -->
+        <section id="screen-review-done" class="screen">
+          <div class="result-star" aria-hidden="true">
+            <svg viewBox="0 0 100 100"><use href="#qoshqar-sym" /></svg>
+          </div>
+          <h2 class="screen-title">Қателермен жұмыс аяқталды!</h2>
+          <p class="start-text" id="review-done-text">
+            Қайталау барысында барлық қате сұрақтарды пысықтадың. Жарайсың!
+          </p>
+          <div class="stats">
+            <div class="stat stat-good">
+              <span class="stat-num" id="review-done-correct">0</span>
+              <span class="stat-label">Қайталауда дұрыс</span>
+            </div>
+            <div class="stat stat-bad">
+              <span class="stat-num" id="review-done-wrong">0</span>
+              <span class="stat-label">Қайталауда қате</span>
+            </div>
+          </div>
+          <div class="results-actions">
+            <button id="btn-review-again" class="btn btn-gold" type="button">Қайтадан қайталау</button>
+            <button id="btn-back-results" class="btn btn-primary" type="button">Нәтижеге оралу</button>
+            <button id="btn-restart-2" class="btn btn-ghost" type="button">Жаңадан бастау</button>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <span class="footer-orn" aria-hidden="true">✦</span>
+      4-сынып математикасы · қазақ ою-өрнегімен безендірілген
+      <span class="footer-orn" aria-hidden="true">✦</span>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
